@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/doc/">
+    <File Path="ARCHITECTURE.md" />
+    <File Path="BACKLOG.md" />
+  </Folder>
+  <Folder Name="/presentation/">
+    <Project Path="AiPresentation/AiPresentation.csproj" Id="757463e4-661c-4851-9eeb-f6d7ec661ba6" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AI.Abstractions/AI.Abstractions.csproj" />
+    <Project Path="src/AI.Core/AI.Core.csproj" />
+    <Project Path="src/AI.Extensions.DI/AI.Extensions.DI.csproj" />
+    <Project Path="src/AI.Providers.Google/AI.Providers.Google.csproj" />
+    <Project Path="src/AI.Providers.OpenAi/AI.Providers.OpenAi.csproj" />
+    <Project Path="src/AI.Providers.OpenRouter/AI.Providers.OpenRouter.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
