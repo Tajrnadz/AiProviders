@@ -1,5 +1,4 @@
 using System.ClientModel;
-using AI.Abstractions.Configuration;
 using AI.Abstractions.Interfaces;
 using AI.Abstractions.Models;
 using Microsoft.Extensions.Logging;
@@ -16,25 +15,24 @@ namespace AI.Providers.LmStudio;
 /// </summary>
 public sealed class LmStudioProvider : IAiProvider
 {
-    private const string DefaultBaseUrl = "http://localhost:1234/v1";
-    private const string DummyApiKey    = "lm-studio";
+    private const string DummyApiKey = "lm-studio";
 
-    private readonly AiProviderOptions _options;
+    private readonly LmStudioOptions _options;
     private readonly ILogger<LmStudioProvider>? _logger;
 
     public LmStudioProvider(
-        IOptionsMonitor<AiProviderOptions> optionsMonitor,
+        IOptions<LmStudioOptions> options,
         ILogger<LmStudioProvider>? logger = null)
     {
-        ArgumentNullException.ThrowIfNull(optionsMonitor);
-        _options = optionsMonitor.CurrentValue;
+        ArgumentNullException.ThrowIfNull(options);
+        _options = options.Value;
         _logger  = logger;
     }
 
     private ChatClient BuildClient(string model)
     {
         var apiKey  = string.IsNullOrWhiteSpace(_options.ApiKey) ? DummyApiKey : _options.ApiKey;
-        var baseUrl = string.IsNullOrWhiteSpace(_options.BaseUrl) ? DefaultBaseUrl : _options.BaseUrl;
+        var baseUrl = string.IsNullOrWhiteSpace(_options.BaseUrl) ? LmStudioOptions.DefaultBaseUrl : _options.BaseUrl;
 
         var clientOptions = new OpenAIClientOptions
         {
@@ -62,8 +60,10 @@ public sealed class LmStudioProvider : IAiProvider
         var chatOptions = new ChatCompletionOptions();
         if (request.Temperature.HasValue)
             chatOptions.Temperature = request.Temperature.Value;
-        if (request.MaxTokens.HasValue)
-            chatOptions.MaxOutputTokenCount = request.MaxTokens.Value;
+
+        var maxTokens = request.MaxTokens ?? _options.MaxTokens;
+        if (maxTokens.HasValue)
+            chatOptions.MaxOutputTokenCount = maxTokens.Value;
 
         _logger?.LogDebug("LmStudio request: Model={Model}, Messages={Count}", request.Model, messages.Count);
 

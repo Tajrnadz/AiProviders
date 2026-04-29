@@ -21,6 +21,7 @@ public static class AiServiceCollectionExtensions
     {
         services.Configure<AiProviderOptions>(configuration.GetSection(AiProviderOptions.SectionName));
         services.Configure<OpenRouterOptions>(configuration.GetSection(OpenRouterOptions.SectionName));
+        services.Configure<LmStudioOptions>(configuration.GetSection(LmStudioOptions.SectionName));
 
         var options = configuration.GetSection(AiProviderOptions.SectionName).Get<AiProviderOptions>()
                       ?? new AiProviderOptions();
