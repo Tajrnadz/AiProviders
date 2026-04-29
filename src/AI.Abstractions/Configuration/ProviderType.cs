@@ -4,5 +4,6 @@ public enum ProviderType
 {
     OpenAi,
     GoogleGenAi,
-    OpenRouter
+    OpenRouter,
+    LmStudio
 }

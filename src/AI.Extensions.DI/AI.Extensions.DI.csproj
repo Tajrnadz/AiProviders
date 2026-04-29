@@ -6,6 +6,7 @@
     <ProjectReference Include="..\AI.Providers.OpenAi\AI.Providers.OpenAi.csproj" />
     <ProjectReference Include="..\AI.Providers.Google\AI.Providers.Google.csproj" />
     <ProjectReference Include="..\AI.Providers.OpenRouter\AI.Providers.OpenRouter.csproj" />
+    <ProjectReference Include="..\AI.Providers.LmStudio\AI.Providers.LmStudio.csproj" />
   </ItemGroup>
 
   <ItemGroup>

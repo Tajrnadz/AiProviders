@@ -21,10 +21,13 @@ builder.Services.Configure<OpenRouterProviderOptions>(
     builder.Configuration.GetSection(AI.Providers.OpenRouter.Configuration.OpenRouterOptions.SectionName));
 builder.Services.Configure<OpenAiProviderOptions>(
     builder.Configuration.GetSection(OpenAiProviderOptions.SectionName));
+builder.Services.Configure<LmStudioProviderOptions>(
+    builder.Configuration.GetSection(LmStudioProviderOptions.SectionName));
 
 // Tests & menu
 builder.Services.AddSingleton<TestOpenRouterOpenAi>();
 builder.Services.AddSingleton<TestOpenAi>();
+builder.Services.AddSingleton<TestLmStudio>();
 builder.Services.AddSingleton<ConsoleMenu>();
 
 var app = builder.Build();

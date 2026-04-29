@@ -11,6 +11,7 @@
     <Project Path="src/AI.Core/AI.Core.csproj" />
     <Project Path="src/AI.Extensions.DI/AI.Extensions.DI.csproj" />
     <Project Path="src/AI.Providers.Google/AI.Providers.Google.csproj" />
+    <Project Path="src/AI.Providers.LmStudio/AI.Providers.LmStudio.csproj" />
     <Project Path="src/AI.Providers.OpenAi/AI.Providers.OpenAi.csproj" />
     <Project Path="src/AI.Providers.OpenRouter/AI.Providers.OpenRouter.csproj" />
   </Folder>

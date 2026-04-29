@@ -3,6 +3,7 @@ using AI.Abstractions.Interfaces;
 using AI.Core.Middleware;
 using AI.Core.Pipeline;
 using AI.Providers.Google;
+using AI.Providers.LmStudio;
 using AI.Providers.OpenAi;
 using AI.Providers.OpenRouter;
 using AI.Providers.OpenRouter.Configuration;
@@ -46,6 +47,10 @@ public static class AiServiceCollectionExtensions
             case ProviderType.OpenRouter:
                 RegisterOpenRouterTransport(services, openRouterOptions.Transport);
                 services.AddSingleton<IAiProvider, OpenRouterProvider>();
+                break;
+
+            case ProviderType.LmStudio:
+                services.AddSingleton<IAiProvider, LmStudioProvider>();
                 break;
 
             default:

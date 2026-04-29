@@ -1,0 +1,98 @@
+using System.ClientModel;
+using AI.Abstractions.Configuration;
+using AI.Abstractions.Interfaces;
+using AI.Abstractions.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using OpenAI;
+using OpenAI.Chat;
+
+namespace AI.Providers.LmStudio;
+
+/// <summary>
+/// Провайдер LM Studio — локальный OpenAI-совместимый сервер.
+/// По умолчанию доступен на http://localhost:1234/v1.
+/// API-ключ не требуется; если не задан — используется заглушка "lm-studio".
+/// </summary>
+public sealed class LmStudioProvider : IAiProvider
+{
+    private const string DefaultBaseUrl = "http://localhost:1234/v1";
+    private const string DummyApiKey    = "lm-studio";
+
+    private readonly AiProviderOptions _options;
+    private readonly ILogger<LmStudioProvider>? _logger;
+
+    public LmStudioProvider(
+        IOptionsMonitor<AiProviderOptions> optionsMonitor,
+        ILogger<LmStudioProvider>? logger = null)
+    {
+        ArgumentNullException.ThrowIfNull(optionsMonitor);
+        _options = optionsMonitor.CurrentValue;
+        _logger  = logger;
+    }
+
+    private ChatClient BuildClient(string model)
+    {
+        var apiKey  = string.IsNullOrWhiteSpace(_options.ApiKey) ? DummyApiKey : _options.ApiKey;
+        var baseUrl = string.IsNullOrWhiteSpace(_options.BaseUrl) ? DefaultBaseUrl : _options.BaseUrl;
+
+        var clientOptions = new OpenAIClientOptions
+        {
+            Endpoint = new Uri(baseUrl)
+        };
+
+        return new ChatClient(model, new ApiKeyCredential(apiKey), clientOptions);
+    }
+
+    private static List<ChatMessage> MapMessages(IList<AiMessage> messages) =>
+        messages.Select<AiMessage, ChatMessage>(m => m.Role switch
+        {
+            "system"    => new SystemChatMessage(m.Content),
+            "assistant" => new AssistantChatMessage(m.Content),
+            _           => new UserChatMessage(m.Content)
+        }).ToList();
+
+    public async Task<AiResponse> CompleteAsync(AiRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var client   = BuildClient(request.Model);
+        var messages = MapMessages(request.Messages);
+
+        var chatOptions = new ChatCompletionOptions();
+        if (request.Temperature.HasValue)
+            chatOptions.Temperature = request.Temperature.Value;
+        if (request.MaxTokens.HasValue)
+            chatOptions.MaxOutputTokenCount = request.MaxTokens.Value;
+
+        _logger?.LogDebug("LmStudio request: Model={Model}, Messages={Count}", request.Model, messages.Count);
+
+        var completion = await client.CompleteChatAsync(messages, chatOptions, cancellationToken);
+
+        var text  = completion.Value.Content[0].Text;
+        var usage = completion.Value.Usage;
+
+        _logger?.LogDebug("LmStudio response: InputTokens={Input}, OutputTokens={Output}",
+            usage?.InputTokenCount, usage?.OutputTokenCount);
+
+        return new AiResponse
+        {
+            Content     = text,
+            Model       = completion.Value.Model,
+            Usage       = usage is not null
+                ? new AiUsage
+                {
+                    InputTokens  = usage.InputTokenCount,
+                    OutputTokens = usage.OutputTokenCount
+                }
+                : null,
+            RawResponse = completion.Value
+        };
+    }
+
+    public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+
+    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
+        => throw new NotImplementedException();
+}

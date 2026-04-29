@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\AI.Extensions.DI\AI.Extensions.DI.csproj" />
     <ProjectReference Include="..\src\AI.Abstractions\AI.Abstractions.csproj" />
+    <ProjectReference Include="..\src\AI.Providers.LmStudio\AI.Providers.LmStudio.csproj" />
   </ItemGroup>
 
   <ItemGroup>

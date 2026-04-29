@@ -5,11 +5,13 @@ namespace AiPresentation;
 
 public sealed class ConsoleMenu(
     TestOpenRouterOpenAi testOpenRouterOpenAi,
-    TestOpenAi testOpenAi)
+    TestOpenAi testOpenAi,
+    TestLmStudio testLmStudio)
 {
     private const string ItemOpenRouter = "OpenRouter via OpenAI SDK";
-    private const string ItemOpenAi = "OpenAI";
-    private const string ItemExit = "Exit";
+    private const string ItemOpenAi     = "OpenAI";
+    private const string ItemLmStudio   = "LM Studio (local)";
+    private const string ItemExit       = "Exit";
 
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
@@ -21,7 +23,7 @@ public sealed class ConsoleMenu(
                 new SelectionPrompt<string>()
                     .Title("[grey]Use[/] [yellow]↑↓[/] [grey]to navigate,[/] [yellow]Enter[/] [grey]to select:[/]")
                     .HighlightStyle(new Style(foreground: Color.Cyan1, decoration: Decoration.Bold))
-                    .AddChoices(ItemOpenRouter, ItemOpenAi, ItemExit));
+                    .AddChoices(ItemOpenRouter, ItemOpenAi, ItemLmStudio, ItemExit));
 
             if (choice == ItemExit)
             {
@@ -35,6 +37,8 @@ public sealed class ConsoleMenu(
                 await testOpenRouterOpenAi.RunAsync(cancellationToken);
             else if (choice == ItemOpenAi)
                 await testOpenAi.RunAsync(cancellationToken);
+            else if (choice == ItemLmStudio)
+                await testLmStudio.RunAsync(cancellationToken);
 
             AnsiConsole.WriteLine();
         }
