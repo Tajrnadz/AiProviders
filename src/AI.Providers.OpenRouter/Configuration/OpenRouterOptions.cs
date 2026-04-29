@@ -21,4 +21,7 @@ public sealed class OpenRouterOptions : AiConnectionOptions
 
     /// <summary>Тип транспорта: OpenAiSdk или NativeSdk.</summary>
     public OpenRouterTransportType Transport { get; set; } = OpenRouterTransportType.OpenAiSdk;
+
+    /// <summary>Модель, используемая по умолчанию для всех запросов через OpenRouter.</summary>
+    public string ModelName { get; set; } = "openai/gpt-4o-mini";
 }
