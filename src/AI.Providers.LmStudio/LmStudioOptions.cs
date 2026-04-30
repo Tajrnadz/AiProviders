@@ -18,4 +18,17 @@ public sealed class LmStudioOptions : AiConnectionOptions
 
     /// <summary>Максимальное количество токенов в ответе (0 — без ограничения).</summary>
     public int? MaxTokens { get; set; }
+
+    /// <summary>
+    /// Количество повторных попыток встроенного retry OpenAI SDK (по умолчанию 2).
+    /// Установите 0, чтобы отключить retry на уровне SDK и управлять им через RetryMiddleware.
+    /// </summary>
+    public int SdkMaxRetries { get; set; } = 0;
+
+    /// <summary>
+    /// Таймаут сетевого запроса OpenAI SDK. Укажите в секундах.
+    /// По умолчанию SDK использует 100 секунд. Для больших моделей рекомендуется 300–600.
+    /// Значение 0 или отрицательное — оставить дефолт SDK.
+    /// </summary>
+    public int NetworkTimeoutSeconds { get; set; } = 0;
 }

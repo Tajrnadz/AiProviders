@@ -1,4 +1,5 @@
 using System.ClientModel;
+using System.ClientModel.Primitives;
 using AI.Abstractions.Interfaces;
 using AI.Abstractions.Models;
 using Microsoft.Extensions.Logging;
@@ -36,8 +37,12 @@ public sealed class LmStudioProvider : IAiProvider
 
         var clientOptions = new OpenAIClientOptions
         {
-            Endpoint = new Uri(baseUrl)
+            Endpoint    = new Uri(baseUrl),
+            RetryPolicy = new ClientRetryPolicy(_options.SdkMaxRetries)
         };
+
+        if (_options.NetworkTimeoutSeconds > 0)
+            clientOptions.NetworkTimeout = TimeSpan.FromSeconds(_options.NetworkTimeoutSeconds);
 
         return new ChatClient(model, new ApiKeyCredential(apiKey), clientOptions);
     }

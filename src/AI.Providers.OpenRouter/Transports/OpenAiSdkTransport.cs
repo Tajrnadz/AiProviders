@@ -52,6 +52,9 @@ public sealed class OpenAiSdkTransport : IOpenRouterTransport
         foreach (var policy in pipeline)
             clientOptions.AddPolicy(policy, PipelinePosition.PerCall);
 
+        if (_options.NetworkTimeoutSeconds > 0)
+            clientOptions.NetworkTimeout = TimeSpan.FromSeconds(_options.NetworkTimeoutSeconds);
+
         return new ChatClient(model, credential, clientOptions);
     }
 

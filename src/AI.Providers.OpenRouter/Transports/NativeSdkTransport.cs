@@ -57,6 +57,9 @@ public sealed class NativeSdkTransport : IOpenRouterTransport
 
         if (!string.IsNullOrWhiteSpace(_options.AppTitle))
             _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Title", _options.AppTitle);
+
+        if (_options.NetworkTimeoutSeconds > 0)
+            _httpClient.Timeout = TimeSpan.FromSeconds(_options.NetworkTimeoutSeconds);
     }
 
     /// <summary>
