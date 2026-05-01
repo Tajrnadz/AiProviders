@@ -13,7 +13,7 @@ namespace AI.Providers.OpenRouter.Transports;
 /// Реализует доступ к OpenRouter через официальный OpenAI .NET SDK,
 /// переключая базовый URL на https://openrouter.ai/api/v1.
 /// </summary>
-public sealed class OpenAiSdkTransport : IOpenRouterTransport
+public sealed partial class OpenAiSdkTransport : IOpenRouterTransport
 {
     private readonly OpenRouterOptions _options;
     private readonly ILogger<OpenAiSdkTransport>? _logger;
@@ -109,11 +109,6 @@ public sealed class OpenAiSdkTransport : IOpenRouterTransport
     }
 
     public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

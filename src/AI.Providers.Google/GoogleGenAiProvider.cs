@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace AI.Providers.Google;
 
-public sealed class GoogleGenAiProvider : IAiProvider
+public sealed partial class GoogleGenAiProvider : IAiProvider
 {
     private readonly AiProviderOptions _options;
     private readonly ILogger<GoogleGenAiProvider>? _logger;
@@ -112,11 +112,6 @@ public sealed class GoogleGenAiProvider : IAiProvider
     }
 
     public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

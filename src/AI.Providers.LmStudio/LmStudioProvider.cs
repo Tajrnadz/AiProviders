@@ -14,7 +14,7 @@ namespace AI.Providers.LmStudio;
 /// По умолчанию доступен на http://localhost:1234/v1.
 /// API-ключ не требуется; если не задан — используется заглушка "lm-studio".
 /// </summary>
-public sealed class LmStudioProvider : IAiProvider
+public sealed partial class LmStudioProvider : IAiProvider
 {
     private const string DummyApiKey = "lm-studio";
 
@@ -96,8 +96,5 @@ public sealed class LmStudioProvider : IAiProvider
     }
 
     public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
-        => throw new NotImplementedException();
-
-    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
         => throw new NotImplementedException();
 }

@@ -13,7 +13,7 @@ namespace AI.Providers.OpenRouter.Transports;
 /// Реализует доступ к OpenRouter через нативный HttpClient,
 /// что даёт полный доступ к OpenRouter-специфичным полям (route, fallbacks, transforms и др.).
 /// </summary>
-public sealed class NativeSdkTransport : IOpenRouterTransport
+public sealed partial class NativeSdkTransport : IOpenRouterTransport
 {
     private readonly OpenRouterOptions _options;
     private readonly HttpClient _httpClient;
@@ -106,11 +106,6 @@ public sealed class NativeSdkTransport : IOpenRouterTransport
     }
 
     public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

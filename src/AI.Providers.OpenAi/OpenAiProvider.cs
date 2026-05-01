@@ -9,7 +9,7 @@ using OpenAI.Chat;
 
 namespace AI.Providers.OpenAi;
 
-public sealed class OpenAiProvider : IAiProvider
+public sealed partial class OpenAiProvider : IAiProvider
 {
     private readonly AiProviderOptions _options;
     private readonly ILogger<OpenAiProvider>? _logger;
@@ -96,11 +96,6 @@ public sealed class OpenAiProvider : IAiProvider
     }
 
     public IAsyncEnumerable<AiChunk> StreamAsync(AiRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IReadOnlyList<AiModel>> GetModelsAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
