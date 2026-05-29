@@ -77,6 +77,10 @@ public sealed partial class OpenAiSdkTransport : IOpenRouterTransport
         var messages = MapMessages(request.Messages);
 
         var chatOptions = new ChatCompletionOptions();
+
+        // TODO: захардкорим температуру
+        //chatOptions.Temperature = 1.2f;
+
         if (request.Temperature.HasValue)
             chatOptions.Temperature = request.Temperature.Value;
         if (request.MaxTokens.HasValue)
